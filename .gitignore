@@ -1,0 +1,4 @@
+.space/
+node_modules/
+build/
+**/creds.json

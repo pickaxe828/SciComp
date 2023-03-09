@@ -1,0 +1,23 @@
+# Spacefile Docs: https://go.deta.dev/docs/spacefile/v0
+v: 0
+app_name: SciComp backend
+micros:
+  - name: backend
+    primary: true
+    src: ./
+    engine: nodejs16
+    commands:
+      - ls -a
+      - npm run build
+    include:
+      - build
+      - creds.json
+    run: "node build/index.js"
+    public_routes:
+      - "/*"
+    actions:
+      - id: "check_notification"
+        name: "Check notification"
+        description: "Check if the water value is too low and send notification"
+        trigger: "schedule"
+        default_interval: "0/5 8-22 * * *"
