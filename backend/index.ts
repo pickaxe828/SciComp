@@ -45,27 +45,30 @@ app.post("/water_level", async (req, res) => {
         count.toString(), 
         { "expireAt": date.setDate(date.getDate() + 1) }
     )
+    
+    // Check if notification should be sent
+    if (inp["value1"] < 500 || inp["value2"] < 500) {}
+    if (count === undefined) { return res.sendStatus(200) }
+    let obj = (await store.get(count.toString()))?.value as Object
+    if (obj === null) { return res.sendStatus(200) }
+    // Send notification
+
+    // use axios to send POST request to IFTTT
+    await axios.post(
+        "https://maker.ifttt.com/trigger/push_notification/with/key/" + creds["ifttt_wh_key"],
+        {
+            "value1": "Water level alert ⚠️",
+            "value2": `💧 Water level is low \"${obj['value1']}\". Please add water to the drain. ⚠️`,
+            "value3": "https://upload.wikimedia.org/wikipedia/commons/7/79/Water_Drop_Icon_Vector.png"
+        }
+    )
     res.send({ "message": "OK" })
 })
 
 app.post('/__space/v0/actions', async (req, res) => {
     const event = req.body.event
     if (event.id === "check_notification") {
-        let count = (await counter.get("counter"))?.value as number
-        if (count === undefined) { return res.sendStatus(200) }
-        let obj = (await store.get(count.toString()))?.value as Object
-        if (obj === null) { return res.sendStatus(200) }
-        // Send notification
-
-        // use axios to send POST request to IFTTT
-        await axios.post(
-            "https://maker.ifttt.com/trigger/push_notification/with/key/" + creds["ifttt_wh_key"],
-            {
-                "value1": "Water level alert ⚠️",
-                "value2": "💧 Water level is low. Please add water to the drain. ⚠️",
-                "value3": "https://upload.wikimedia.org/wikipedia/commons/7/79/Water_Drop_Icon_Vector.png"
-            }
-        )
+        
         // TODO
     }
 
