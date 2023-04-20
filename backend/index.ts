@@ -58,7 +58,7 @@ app.post("/water_level", async (req, res) => {
         "https://maker.ifttt.com/trigger/push_notification/with/key/" + creds["ifttt_wh_key"],
         {
             "value1": "Water level alert ⚠️",
-            "value2": `💧 Water level is low \"${obj['value1']}\". Please add water to the drain. ⚠️`,
+            "value2": `💧 Water level is low \"${inp['value1']}\" \"${inp['value2']}\". Please add water to the drain. ⚠️`,
             "value3": "https://upload.wikimedia.org/wikipedia/commons/7/79/Water_Drop_Icon_Vector.png"
         }
     )
